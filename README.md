@@ -91,20 +91,20 @@ scripts/sync.ps1                   拉取更新并校验
 .github/workflows/validate.yml     CI：frontmatter / 编码 / 隐私泄漏
 ```
 
-## 自动化更新
+## 自动化更新与校验
+
+三道防线，跑的是**同一份** [`scripts/validate.py`](scripts/validate.py)：
+
+| 时机 | 怎么触发 | 需要做什么 |
+|---|---|---|
+| 提交前 | `git commit` | 装一次：`./scripts/install-hooks.ps1` |
+| 推送后 | GitHub Actions | 无需配置，见 `.github/workflows/validate.yml` |
+| 手动 | 任何时候 | `python scripts/validate.py` |
 
 - **改内容**：在本仓库改 → commit → push。
 - **用最新版**：`./scripts/sync.ps1`（`git pull --ff-only` + 校验）。
   因为 skill 目录是链接，拉取后立即生效，不存在两份副本。
-- **CI**：每次 push 都会跑 [`scripts/validate.py`](scripts/validate.py) ——
-  校验 skill frontmatter、UTF-8 编码、`.ps1` 的 UTF-8 BOM，
-  并扫描是否误传本机绝对路径或密钥。
-
-  本地推送前可以跑**同一份**脚本，不必等 CI：
-
-  ```bash
-  python scripts/validate.py
-  ```
+- **钩子只写进 `.git/hooks/`**，不进仓库、不影响其他仓库。
 
 ## 已知陷阱：Windows PowerShell 5.1 与 UTF-8 BOM
 

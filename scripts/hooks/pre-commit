@@ -1,0 +1,13 @@
+#!/bin/sh
+# 提交前跑与 CI 完全相同的校验（frontmatter / 编码 / .ps1 BOM / 隐私泄漏）。
+# 由 scripts/install-hooks.ps1 安装到 .git/hooks/pre-commit。
+set -e
+
+if command -v python3 >/dev/null 2>&1; then
+    exec python3 scripts/validate.py
+elif command -v python >/dev/null 2>&1; then
+    exec python scripts/validate.py
+else
+    echo "pre-commit: 未找到 python，跳过校验" >&2
+    exit 0
+fi
