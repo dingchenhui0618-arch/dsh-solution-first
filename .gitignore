@@ -1,0 +1,39 @@
+# 凭据与环境
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.*
+
+# 依赖与构建产物
+node_modules/
+dist/
+build/
+out/
+target/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 编辑器与系统
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 日志与临时文件
+*.log
+*.tmp
+tmp/
+temp/
+
+# 本地个人配置（绝不公开）
+AGENTS.local.md
+*.local.md
