@@ -1,6 +1,14 @@
 # dsh-solution-first
 
+[![CI](https://github.com/dingchenhui0618-arch/dsh-solution-first/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/dingchenhui0618-arch/dsh-solution-first/actions/workflows/validate.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 > **先选路径，再动手。** 一套让 coding agent 在写代码之前先找现成解、先说清验收标准的工作约定。
+
+> 用着还行的话，点个 ⭐ 就够了——插件市场的「搜插件」按 GitHub star 排序，star 是这个插件能被人翻到的唯一杠杆。
+
+安全模型——三个脚本各写哪些路径、对工作区有什么权限、哪些限制是设计取舍：
+[SECURITY.md](SECURITY.md)。
 
 ## 它解决什么问题
 
@@ -88,7 +96,7 @@ skills/solution-first/SKILL.md     可复用 skill：搜索顺序 / 评估清单
 templates/AGENTS.md.snippet.md     可直接粘贴的常驻闸门段落
 scripts/install.ps1                把 skill 挂到 agent skill 目录
 scripts/sync.ps1                   拉取更新并校验
-.github/workflows/validate.yml     CI：frontmatter / 编码 / 隐私泄漏
+.github/workflows/validate.yml     CI：frontmatter / 编码 / 隐私泄漏，以及 Windows 上的 PowerShell 语法解析
 ```
 
 ## 自动化更新与校验

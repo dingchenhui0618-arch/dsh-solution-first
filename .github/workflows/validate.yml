@@ -23,3 +23,37 @@ jobs:
       # 与本地 `python scripts/validate.py` 完全同一份逻辑
       - name: 运行 validate.py
         run: python scripts/validate.py
+
+  powershell:
+    # validate.py 能检查 BOM，但只有 Windows 上的 PowerShell 解析器会真正暴露
+    # 语法错误（例如引号 / 参数集写错）。这一步用 pwsh 把每个 .ps1 解析一遍。
+    name: PowerShell 语法解析（Windows）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 解析 scripts/**/*.ps1
+        shell: pwsh
+        run: |
+          $failed = $false
+          $files = Get-ChildItem -Path scripts -Recurse -Filter *.ps1 -File
+          if ($files.Count -eq 0) {
+            Write-Error '没有找到任何 .ps1 文件'
+            exit 1
+          }
+          foreach ($file in $files) {
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              $file.FullName, [ref]$null, [ref]$errors)
+            if ($errors.Count -gt 0) {
+              $failed = $true
+              foreach ($e in $errors) {
+                Write-Host "::error file=$($file.Name),line=$($e.Extent.StartLineNumber)::$($e.Message)"
+              }
+            }
+            else {
+              Write-Host "OK   $($file.Name)"
+            }
+          }
+          if ($failed) { exit 1 }
+          Write-Host "PASS $($files.Count) 个 .ps1 均可解析"
